@@ -1,0 +1,201 @@
+{% extends 'office.html' %}
+
+{% block office-content %}
+<ol class="breadcrumb">
+    <li class="active" aria-current="page">الإحصاءات</li>
+</ol>
+
+<section class="my-3">
+    <div class="container">
+        <div class="row my-3">
+            <div class="col-12 mb-3">
+                <form action="{% url 'office:office-statistics' %}" method="GET">
+                    <div><i class="fas fa-search ml-1"></i>البحث بأستخدام تاريخ الارسال</div>
+                    <div class="form-row">
+                        <div class="form-group col-lg-6 col-12 mb-3">
+                            <label for="from">من:</label>
+                            <input type="date" id="from" class="form-control" name="start">
+                        </div>
+                        <div class="form-group col-lg-6 col-12 mb-3">
+                            <label for="to">الى:</label>
+                            <input type="date" id="to" class="form-control" name="end">
+                        </div>
+                        <div class="form-group col-lg-6 col-12">
+                            <input type="submit" class="btn btn-warning" value="البحث بأستخدام التاريخ">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-12 mb-3">
+                <div class="bg-dark text-warning rounded-top text-center p-3">
+                    {% if start and end %}
+                    <span>اظهار الاحصائية ابتداء من تاريخ</span>
+                    <span>({{start}})</span> الى تاريخ <span>({{end}})</span>
+                    {% elif start %}
+                    <span>اظهار الاحصائية بتاريخ : ({{start}})</span>
+                    {% elif end %}
+                    <span>اظهار الاحصائية بتاريخ : ({{end}})</span>
+                    {% else %}
+                    <span>الاحصائية العامة</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-4 col-12 mb-lg-0 mb-3">
+                <div class="card bg-dark">
+                    <div class="card-body text-white">
+                        <div class="media align-items-center">
+                            <div class="pl-3" style="font-size: 35px;">
+                                <i class="fa fa-vote-yea"></i>
+                            </div>
+                            <div class="media-body pr-3 border-right">
+                                <h5>{{ done_transfers_count }}</h5>
+                                <span class="small-font">الحوالات الموافق عليها</span>
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+            </div>
+            <div class="col-lg-4 col-12 mb-lg-0 mb-3">
+                <div class="card bg-dark">
+                    <div class="card-body text-white">
+                        <div class="media align-items-center">
+                            <div class="pl-3" style="font-size: 35px;">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div class="media-body pr-3 border-right">
+                                <h5>${{ amount_count }}</h5>
+                                <span class="small-font">اجمالي المبالغ</span>
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+            </div>
+            <div class="col-lg-4 col-12 mb-lg-0 mb-3">
+                <div class="card bg-dark">
+                    <div class="card-body text-white">
+                        <div class="media align-items-center">
+                            <div class="pl-3" style="font-size: 35px;">
+                                <i class="fas fa-wallet"></i>
+                            </div>
+                            <div class="media-body pr-3 border-right">
+                                <h5>${{ gross_profit_count }}</h5>
+                                <span class="small-font">اجمالي الربح</span>
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+            </div>
+        </div>
+        <div class="row my-3">
+            <div class="col-12">
+                <canvas height="120" id="transfersChart"></canvas>
+            </div>
+        </div>
+        <div class="row my-3">
+            <div class="col-12">
+                <table class="table table-bordered">
+                    <thead>
+                      <tr class="bg-dark text-white">
+                        <th scope="col">#</th>
+                        <th scope="col">الحوالات الصادرة</th>
+                        <th scope="col">الحوالات الواردة</th>
+                        <th scope="col">المجموع</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th class="bg-dark text-white" scope="row">اجمالي الحوالات</th>
+                        <td>{{ outgoing_transfers_count }}</td>
+                        <td>{{ incoming_transfers_count }}</td>
+                        <td>{{ transfers_count }}</td>
+                      </tr>
+                      <tr>
+                        <th class="bg-dark text-white" scope="row">الحوالات الموافق عليها</th>
+                        <td>{{ done_outgoing_transfers_count }}</td>
+                        <td>{{ done_incoming_transfers_count }}</td>
+                        <td>{{ done_transfers_count }}</td>
+                      </tr>
+                      <tr>
+                        <th class="bg-dark text-white" scope="row">الحوالات المعلقة</th>
+                        <td>{{ waiting_outgoing_transfers_count }}</td>
+                        <td>{{ waiting_incoming_transfers_count }}</td>
+                        <td>{{ waiting_transfers_count }}</td>
+                      </tr>
+                      <tr>
+                        <th class="bg-dark text-white" scope="row">الحوالات المرفوضة</th>
+                        <td>{{ rejected_outgoing_transfers_count }}</td>
+                        <td>{{ rejected_incoming_transfers_count }}</td>
+                        <td>{{ rejected_transfers_count }}</td>
+                      </tr>
+                      <tr>
+                        <th class="bg-dark text-white" scope="row">اجمالي المبالغ</th>
+                        <td>${{ sent_amount_count }}</td>
+                        <td>${{ incoming_sent_amount_count }}</td>
+                        <td>${{ amount_count }}</td>
+                      </tr>
+                      <tr>
+                        <th class="bg-dark text-white" scope="row">اجمالي العمولة</th>
+                        <td>${{ sender_commission_count }}</td>
+                        <td>${{ recipient_commission_count }}</td>
+                        <td>${{ commission_count }}</td>
+                      </tr>
+                      <tr>
+                        <th class="bg-dark text-white" scope="row">اجمالي الخصم</th>
+                        <td>${{ commission_from_sender_count }}</td>
+                        <td>${{ commission_from_recipient_count }}</td>
+                        <td>${{ commission_from_office_count }}</td>
+                      </tr>
+                      <tr>
+                        <th class="bg-dark text-white" scope="row">اجمالي الربح</th>
+                        <td>${{ gross_profit }}</td>
+                        <td>${{ incoming_gross_profit }}</td>
+                        <td>${{ gross_profit_count }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock office-content %}
+
+
+{% block office-chart %}
+<script>
+var transfersChart = document.getElementById('transfersChart').getContext('2d')
+    Chart.defaults.global.defaultFontFamily = 'Lato'
+    Chart.defaults.global.defaultFontSize = 14
+    Chart.defaults.global.defaultFontColor = '#1d2124'
+var TChart = new Chart(transfersChart, {
+    type:'bar', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
+    data:{
+        labels:['الحوالات الصادرة', 'الحوالات الموافق عليها', 'الحوالات المعلقة', 'الحوالات المرفوضة'],
+        datasets:[{
+            label:'الحوالات الصادرة',
+            data:[{{outgoing_transfers_count}},{{done_outgoing_transfers_count}},{{waiting_outgoing_transfers_count}},{{rejected_outgoing_transfers_count}}],
+            backgroundColor: '#ffc107',
+            borderWidth: 1,
+            borderColor: '#ffc107',
+        },
+        {
+            label:'الحوالات الواردة',
+            data:[{{incoming_transfers_count}},{{done_incoming_transfers_count}},{{waiting_incoming_transfers_count}},{{rejected_incoming_transfers_count}}],
+            backgroundColor: '#343a40 ',
+            borderWidth: 1,
+            borderColor: '#343a40 ',
+        }
+    ]
+    },
+    options:{legend:{
+        display:true,
+        position:'bottom',
+        labels:{
+            fontColor:'#000'
+        }
+    }}
+})
+</script>
+{% endblock %}
+

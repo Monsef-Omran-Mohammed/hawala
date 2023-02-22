@@ -1,0 +1,31 @@
+{% extends 'office.html' %}
+
+{% block office-content %}
+<ol class="breadcrumb">
+    <li><a href="{% url 'office:office-profile' %}">الملف الشخصي</a></li>
+    <li class="mx-1">/</li>
+    <li class="active" aria-current="page">حذف رقم الهاتف</li>
+</ol>
+
+<section class="my-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mb-3">
+                <div class="card bg-light">
+                    <div class="card-header text-white bg-dark">حذف رقم الهاتف</div>
+                    <div class="card-body">
+                        <div class="bg-white border rounded p-2 mb-3">{{ phone.phone }}</div>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="alert alert-danger" role="alert">عند حذف رقم الهاتف لايمكن التراجع عن هذه الخطوه فيما بعد.</div>
+                            <button class="btn btn-warning" type="submit">حذف رقم الهاتف</button>
+                            <button class="btn btn-dark" onclick="history.back()">تراجع</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock office-content %}

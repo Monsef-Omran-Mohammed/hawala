@@ -1,0 +1,113 @@
+{% extends 'office.html' %}
+
+{% block office-content %}
+<ol class="breadcrumb">
+    <li><a href="{% url 'office:outgoing-transfers-list' %}">الحوالات الصادرة</a></li>
+    <li class="mx-1">/</li>
+    <li class="active" aria-current="page">الحوالات الصادرة المرفوضة</li>
+</ol>
+
+<div class="container my-3">
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">المرسل</th>
+                        <th scope="col">المستقبل</th>
+                        <th scope="col">المبلغ المرسل</th>
+                        <th scope="col">تاريخ الرفض</th>
+                        <th scope="col">وقت الرفض</th>
+                        <th scope="col">الحالة</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in transfers %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td><a href="{{ i.get_outgoing_money_order_url }}">{{ i.sender_office.name }}</a></td>
+                            <td><a href="{{ i.get_outgoing_money_order_url }}">{{ i.recipient_office.name }}</a></td>
+                            <td><a href="{{ i.get_outgoing_money_order_url }}">{{ i.sent_amount }}</a></td>
+                            <td><a href="{{ i.get_outgoing_money_order_url }}">{{ i.rejection_at.date|date:"Y/m/d" }}</a></td>
+                            <td><a href="{{ i.get_outgoing_money_order_url }}">{{ i.rejection_at.time }}</a></td>
+                            <td><a href="{{ i.get_outgoing_money_order_url }}">
+                                {% if i.rejection == True %}<span class="badge badge-danger">رفض</span>{% endif %}
+                            </a></td>
+                        </tr>
+                        {% endfor %}
+                    
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- pagination -->
+        <div class="col-12 my-3">
+          <ul class="pagination">
+              {% if transfers.has_previous %}
+              <li class="page-item">
+                  <a class="page-link" href="?page={{ transfers.previous_page_number }}" tabindex="-1">السابق</a>
+              </li>
+              {% else %}
+              <li class="page-item disabled">
+                  <a class="page-link" href="#!" tabindex="-1">السابق</a>
+              </li>
+              {% endif %}
+              
+              {% if transfers.number > 3 %}
+                  <li class="page-item">
+                      <a class="page-link" href="?page=1">1</a>
+                  </li>
+                  {% if transfers.number > 4 %}
+                  <li class="page-item">
+                      <span class="page-link">...</span>
+                  </li>
+                  {% endif %}
+              {% endif %}
+
+              {% for num in transfers.paginator.page_range %}
+                  {% if transfers.number == num %}
+                      <a class="d-none" href="?page={{ num }}">{{ num }}</a>
+                      <li class="page-item active">
+                          <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                      </li>
+                  {% elif num > transfers.number|add:'-3' and num < transfers.number|add:'3' %}
+                      <a class="d-none" href="?page={{ num }}">{{ num }}</a>
+                      <li class="page-item">
+                          <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                      </li>
+                  {% endif %}
+              {% endfor %}
+              
+              
+
+              {% if transfers.has_next %}
+                  {% if transfers.number < transfers.paginator.num_pages|add:'-3' %}
+                      <li class="page-item">
+                          <span class="page-link">...</span>
+                      </li>
+                      <li class="page-item">
+                          <a class="page-link" href="?page={{ transfers.paginator.num_pages }}">{{ transfers.paginator.num_pages }}</a>
+                      </li>
+                  {% elif transfers.number < transfers.paginator.num_pages|add:'-2' %}
+                      <li class="page-item">
+                          <a class="page-link" href="?page={{ transfers.paginator.num_pages }}">{{ transfers.paginator.num_pages }}</a>
+                      </li>
+                  {% endif %}
+                  <li class="page-item">
+                      <a class="page-link" href="?page={{transfers.next_page_number}}">التالي</a>
+                  </li>
+              {% else %}
+              <li class="page-item disabled">
+                  <a class="page-link" href="#!">التالي</a>
+              </li>
+              {% endif %}
+          </ul>
+      </div>
+      <!-- end pagination -->
+
+    </div>
+</div>
+
+{% endblock %}

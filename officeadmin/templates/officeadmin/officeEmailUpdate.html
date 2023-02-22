@@ -1,0 +1,35 @@
+{% extends 'officeadmin.html' %}
+
+{% block officeadmin-content %}
+<ol class="breadcrumb">
+    <li>المكتب</li>
+    <li class="mx-1">/</li>
+    <li class="active" aria-current="page">تعديل البريد الالكتروني الخاص</li>
+</ol>
+
+<section class="my-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mb-3">
+                <div class="card bg-light">
+                    <div class="card-header text-white bg-dark">تعديل البريد الالكتروني الخاص</div>
+                    <div class="card-body">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="form-row">
+                                <div class="form-group col-12">
+                                    <label for="id_email">{{ form.email.label }}</label>
+                                    {{ form.email }}
+                                </div>
+                            </div>
+                            <button class="btn btn-warning" type="submit">حفظ التعديل</button>
+                            <button class="btn btn-dark" onclick="history.back()">تراجع</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock officeadmin-content %}

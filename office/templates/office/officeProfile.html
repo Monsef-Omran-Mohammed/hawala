@@ -1,0 +1,45 @@
+{% extends 'office.html' %}
+
+{% block office-content %}
+<ol class="breadcrumb">
+    <li class="active" aria-current="page">الملف الشخصي : {{ profile.name }}</li>
+</ol>
+
+<section class="my-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mb-3">
+                <a href="{% url 'office:office-profile-update' %}" class="btn btn-warning">تعديل البيانات</a>
+                <a href="{% url 'office:change-office-password' %}" class="btn btn-warning">تغيير كلمة المرور</a>
+            </div>
+
+            <div class="col-12 mb-3">
+                <div class="card bg-light">
+                    <div class="card-header text-white bg-dark">بيانات الحساب</div>
+                    <div class="card-body">
+                      <div class="bg-white border rounded p-2 mb-2"><span class="font-weight-bold"><i class="fas fa-at ml-1"></i>المعرف : </span>@{{ profile.user.username }}</div>
+                      <div class="bg-white border rounded p-2 mb-2"><span class="font-weight-bold"><i class="fas fa-hotel ml-1"></i>اسم المكتب : </span>{{ profile.name }}</div>
+                      <div class="bg-white border rounded p-2 mb-2"><span class="font-weight-bold"><i class="fas fa-envelope ml-1"></i>البريد الالكتروني (خاص) : </span>{{ profile.user.email }}</div>
+                      <div class="bg-white border rounded p-2 mb-2"><span class="font-weight-bold"><i class="fas fa-phone ml-1"></i>رقم الهاتف (خاص) : </span>{{ profile.special_phone }}</div>
+                      <div class="bg-white border rounded p-2 mb-2"><span class="font-weight-bold"><i class="fas fa-building ml-1"></i>المدينة : </span>{% for k,v in CITY_CHOICES %}
+                        {% if k == profile.city %}
+                        {{ v }}
+                        {% endif %}
+                        {% endfor %}</div>
+                      <div class="bg-white border rounded p-2 mb-2"><span class="font-weight-bold"><i class="fas fa-map-marker-alt ml-1"></i>العنوان : </span>{{ profile.address }}</div>
+                      <div class="bg-white border rounded p-2 mb-2"><p class="font-weight-bold"><i class="fas fa-book-open ml-1"></i>نبذة تعريفية : </p>{% if profile.bio %}{{profile.bio}}{% else %}//{% endif %}</div>
+                      <div class="bg-white border rounded p-2 mb-2"><span class="font-weight-bold"><i class="fas fa-envelope ml-1"></i>البريد الالكتروني (عام) : </span>{{ profile.email }}</div>
+                        <div class="mb-2"><a href="{% url 'office:create-office-phone-number' %}">اضافة رقم هاتف جديد</a></div>
+                      <div class="bg-white border rounded p-2 mb-2"><p class="font-weight-bold">ارقام الهواتف (عام) : </p>{% if phone_numbers %}{% for n in phone_numbers %}<p><i class="fas fa-phone ml-1"></i><span>{{ n.phone }} | <a class="text-info" href="{{ n.get_phone_number_update_url }}">تعديل</a> | <a class="text-danger" href="{{ n.get_phone_number_delete_url }}">حذف</a></p>{% endfor %}{% else %}<p>//</p>{% endif %}</div>
+                      
+                      <div class="bg-white border rounded p-2"><p class="font-weight-bold"><i class="fas fa-map-marked-alt ml-1"></i><span>العنوان على خارطة قوقل : </span></p><iframe class="w-100 border-0" src="https://www.google.com/maps/{{ profile.url_address }}" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+{% endblock office-content %}

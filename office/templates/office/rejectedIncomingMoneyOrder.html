@@ -1,0 +1,128 @@
+{% extends 'office.html' %}
+
+{% block office-content %}
+<ol class="breadcrumb">
+    <li><a href="{% url 'office:rejected-incoming-transfers-list' %}">الحوالات الواردة المرفوضة</a></li>
+    <li class="mx-1">/</li>
+    <li class="active" aria-current="page">الحوالة</li>
+</ol>
+
+<div class="container my-3">
+    <div class="row">
+        <div class="col-md-6 col-12 mb-lg-0 mb-3">
+            <div class="card text-white bg-dark mb-3">
+                <div class="card-header">المرسل</div>
+                <div class="card-body">
+                  <h5 class="card-title">{{rejected_money_order.sender_office.name}}</h5>
+                  <p class="card-text">{{rejected_money_order.sender_office}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-12 mb-lg-0 mb-3">
+            <div class="card text-white bg-dark mb-3">
+                <div class="card-header">المستقبل</div>
+                <div class="card-body">
+                  <h5 class="card-title">{{rejected_money_order.recipient_office.name}}</h5>
+                  <p class="card-text">{{rejected_money_order.recipient_office}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-12 mb-lg-0 mb-3">
+            <div class="card bg-light mb-3">
+                <div class="card-header">المبلغ المرسل</div>
+                <div class="card-body">
+                  <h5 class="card-title">{{rejected_money_order.sent_amount}}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-12 mb-lg-0 mb-3">
+            <div class="card bg-light mb-3">
+                <div class="card-header">عمولة المرسل</div>
+                <div class="card-body">
+                  <h5 class="card-title">{{rejected_money_order.sender_commission}}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-12 mb-lg-0 mb-3">
+            <div class="card bg-light mb-3">
+                <div class="card-header">عمولة المستقبل</div>
+                <div class="card-body">
+                  <h5 class="card-title">{{rejected_money_order.recipient_commission}}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-12 mb-lg-0 mb-3">
+            <div class="card bg-light mb-3">
+                <div class="card-header">العمولة من المرسل</div>
+                <div class="card-body">
+                  <h5 class="card-title">{{rejected_money_order.commission_from_sender}}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-12 mb-lg-0 mb-3">
+            <div class="card bg-light mb-3">
+                <div class="card-header">العمولة من المستقبل</div>
+                <div class="card-body">
+                  <h5 class="card-title">{{rejected_money_order.commission_from_recipient}}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-12 mb-lg-0 mb-3">
+            <div class="card bg-light mb-3">
+                <div class="card-header">تاريخ ووقت الارسال</div>
+                <div class="card-body">
+                  <h5 class="card-title">{{rejected_money_order.sent_at.date|date:"Y/m/d"}} | {{rejected_money_order.sent_at.time}}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-12 mb-lg-0 mb-3">
+            <div class="card bg-danger text-white mb-3">
+                <div class="card-header">الرفض من قبل المستقبل</div>
+                <div class="card-body">
+                    {% if rejected_money_order.rejection %}
+                    <h5 class="card-title">تمت الرفض</h5>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-12 mb-lg-0 mb-3">
+            <div class="card bg-danger text-white mb-3">
+                <div class="card-header">تاريخ ووقت الرفض</div>
+                <div class="card-body">
+                  {% if rejected_money_order.rejection %}
+                  <h5 class="card-title">{{rejected_money_order.rejection_at.date|date:"Y/m/d"}} | {{rejected_money_order.rejection_at.time}}</h5>
+                  {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-12 mb-lg-0 mb-3">
+            <div class="card bg-light mb-3">
+                <div class="card-header">ملاحظة</div>
+                <div class="card-body">
+                  <h5 class="card-title">
+                    {% if rejected_money_order.note %}
+                    {{rejected_money_order.note}}
+                    {% else %}
+                    //
+                    {% endif %}
+                  </h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 mb-lg-0 mb-3">
+            <div class="card bg-light mb-3">
+                <div class="card-header">ملاحظة الرفض</div>
+                <div class="card-body">
+                  <h5 class="card-title">
+                    {% if rejected_money_order.note2 %}
+                    {{rejected_money_order.note2}}
+                    {% else %}
+                    //
+                    {% endif %}
+                  </h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

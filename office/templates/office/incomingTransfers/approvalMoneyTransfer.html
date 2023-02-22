@@ -1,0 +1,42 @@
+{% extends 'office.html' %}
+
+{% block office-content %}
+<ol class="breadcrumb">
+    <li class="active" aria-current="page">الموافقة على تلقي الحوالة</li>
+</ol>
+
+<section class="my-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <form method="post" enctype="multipart/form-data"> {% csrf_token %}
+                    <div class="form-row">
+                      <div class="form-group mb-0 col-md-12">
+                        <div class="card bg-light mb-3">
+                            <div class="card-header bg-dark text-white"><label class="m-0" for="id_approval_by_recipient">تلقي الحوالة <span class="text-warning">*</span></label></div>
+                            <div class="card-body">
+                                {{ form.approval_by_recipient }}
+                                <label class="form-check-label mr-4" for="id_approval_by_recipient">الموافقة على الحوالة.</label>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="form-group mb-0 col-md-12">
+                        <div class="card bg-light mb-3">
+                            <div class="card-header bg-dark text-white"><label class="m-0" for="id_note2">{{ form.note2.label }}</label></div>
+                            <div class="card-body">
+                                {{ form.note2 }}
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="alert alert-danger" role="alert">عند الموافقة على الحوالة والحفظ لايمكن التراجع عن هذه الخطوه فيما بعد.</div>
+
+                    <button type="submit" class="btn btn-warning">الموافقة على الحوالة</button>
+                    <button class="btn btn-dark" onclick="history.back()">تراجع</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock office-content %}

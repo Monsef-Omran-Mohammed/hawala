@@ -1,0 +1,26 @@
+{% extends 'public.html' %}
+
+{% block public-content %}
+<div class="container">
+    <div class="row min-vh-100 justify-content-center align-items-center">
+        <div class="col-lg-6 col-md-9 col-12">
+            <div class="card bg-light mb-3">
+                <div class="card-header bg-dark text-white">تسجيل الدخول</div>
+                <div class="card-body">
+                    <form method="post"> {% csrf_token %}
+                        <div class="form-group">
+                          <label for="id_username">اسم المستخدم</label>
+                          <input type="text" name="username" class="form-control mt-1" required="true" placeholder="ادخل اسم المستخدم">
+                        </div>
+                        <div class="form-group">
+                          <label for="id_password">كلمة المرور</label>
+                          <input type="password" name="password" class="form-control mt-1" required="true" placeholder="ادخل كلمة السر">
+                        </div>
+                        <button type="submit" class="btn btn-warning">تسجيل الدخول</button>
+                      </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock public-content %}

@@ -1,0 +1,53 @@
+html {
+    scroll-behavior: smooth;
+}
+body {
+    direction: rtl;
+    text-align: right;
+    font-family: sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+}
+* {
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+a, a:hover {
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.5s ease;
+}
+
+
+
+
+
+
+nav.navbar a.navbar-brand {
+    color: white !important;
+}
+
+nav.navbar .nav-link{
+    color: white !important;
+}
+
+li.active a.nav-link, li a.nav-link:hover{
+    color: #f5dd5d !important;
+}
+
+.dropdown-item{color:#212529;}
+.dropdown-item:focus,.dropdown-item:hover{color:#f5dd5d;background-color:#343a40}
+.dropdown-item.active,.dropdown-item:active{color:#343a40;background-color:#f5dd5d}
+
+/* pagination */
+.pagination .page-item.active .page-link{z-index:1;color:#fff;background-color:#343a40;border-color:#343a40}
+.pagination .page-link:focus{z-index:2;outline:0;box-shadow:0 0 0 0.2rem rgb(90 33 65 / 25%)}
+.pagination .page-item:last-child .page-link{border-radius:0;border-top-left-radius:.25rem;border-bottom-left-radius:.25rem}
+.pagination .page-item:first-child .page-link {border-radius:0;border-top-right-radius:.25rem;border-bottom-right-radius:.25rem;}
+
+
+
+

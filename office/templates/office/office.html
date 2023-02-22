@@ -1,0 +1,127 @@
+{% extends 'office.html' %}
+
+{% block office-content %}
+<ol class="breadcrumb">
+    <li><a href="{% url 'office:office-list' %}">ارسال حوالة - قائمة المكاتب</a></li>
+    <li class="mx-1">/</li>
+    <li class="active" aria-current="page">{{ office.name }}</li>
+</ol>
+
+<section class="my-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-12 mb-3">
+                <div class="card bg-light">
+                    <div class="card-header text-white bg-dark">اسم المكتب</div>
+                    <div class="card-body">
+                      <p class="card-text">{{office.name}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-12 mb-3">
+                <div class="card bg-light">
+                    <div class="card-header text-white bg-dark">المعرف</div>
+                    <div class="card-body">
+                      <p class="card-text">@{{office.user.username}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-12 mb-3">
+                <div class="card bg-light">
+                    <div class="card-header text-white bg-dark">البريد الالكتروني</div>
+                    <div class="card-body">
+                      <p class="card-text">{{office.email}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-12 mb-3">
+                <div class="card bg-light">
+                    <div class="card-header text-white bg-dark">المدينة</div>
+                    <div class="card-body">
+                      <p class="card-text">
+                        {% for k,v in CITY_CHOICES %}
+                        {% if k == office.city %}
+                        {{ v }}
+                        {% endif %}
+                        {% endfor %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-12">
+                <div class="card bg-light mb-3">
+                    <div class="card-header text-white bg-dark">العنوان</div>
+                    <div class="card-body">
+                      <p class="card-text">{{office.address}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 col-12">
+                <div class="card bg-light mb-3">
+                    <div class="card-header text-white bg-dark">ارقام الهواتف</div>
+                    <div class="card-body">
+                        {% if phone_numbers %}
+                        <ul class="list-unstyled m-0">
+                        {% for n in phone_numbers %}
+                            <li><i class="fas fa-phone ml-1"></i><span>{{ n.phone }}</li>
+                        {% endfor %}
+                        </ul>
+                        {% else %}
+                        <span>//</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 col-12">
+                <div class="card bg-light mb-3">
+                    <div class="card-header text-white bg-dark">نبذة تعريفية</div>
+                    <div class="card-body">
+                      <p class="card-text">{% if office.bio %}{{office.bio}}{% else %}//{% endif %}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 col-12 mb-3">
+                <div class="card bg-light">
+                    <div class="card-header text-white bg-dark">العنوان على خارطة قوقل</div>
+                    <div class="card-body">
+                        <iframe class="w-100 border-0" src="https://www.google.com/maps/{{ office.url_address }}" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+            {% if office.user.is_active == True %}
+            <div class="col-lg-12 col-12 mb-3">
+                <div class="card bg-light">
+                    <div class="card-header text-white bg-dark">ارسال طلب الحوالة المالية</div>
+                    <div class="card-body">
+                        <form action="" method="POST"> {% csrf_token %}
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="id_sent_amount">{{ form.sent_amount.label }}</label>
+                                    {{ form.sent_amount }}
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="id_sender_commission">{{ form.sender_commission.label }}</label>
+                                    {{ form.sender_commission }}
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="id_recipient_commission">{{ form.recipient_commission.label }}</label>
+                                    {{ form.recipient_commission }}
+                                </div>
+                                <div class="form-group col-12">
+                                    <label for="id_note">{{ form.note.label }}</label>
+                                    {{ form.note }}
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-warning">ارسال طلب الحوالة</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+
+
+{% endblock office-content %}

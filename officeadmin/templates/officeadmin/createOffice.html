@@ -1,0 +1,92 @@
+{% extends 'officeadmin.html' %}
+
+{% block officeadmin-content %}
+<ol class="breadcrumb">
+    <li class="active" aria-current="page">اضافة مكتب جديد</li>
+</ol>
+
+<section class="my-3">
+    <div class="container">
+        <div class="row">
+            <form action="" method="POST"> {% csrf_token %}
+                <div class="col-lg-12 col-12 mb-3">
+                    <div class="card bg-light">
+                        <div class="card-header text-white bg-dark">بيانات الحساب الرئيسية</div>
+                        <div class="card-body">
+                            <div class="form-row">
+                                <div class="form-group col-12">
+                                    <label for="id_username">{{ form.username.label }}</label>
+                                    {{ form.username }}
+                                    <small id="emailHelp" class="form-text text-muted">مطلوب. 150 حرفًا أو أقل. أحرف وأرقام و @ /. / + / - / _ فقط.</small>
+                                </div>
+                                <div class="form-group col-12">
+                                    <label for="id_email">{{ form.email.label }}</label>
+                                    {{ form.email }}
+                                </div>
+                                <div class="form-group col-12">
+                                    <label for="id_password1">{{ form.password1.label }}</label>
+                                    {{ form.password1 }}
+                                    <small id="emailHelp" class="form-text text-muted">لا يمكن أن تكون كلمة مرورك مشابهة جدًا لمعلوماتك الشخصية الأخرى.</small>
+                                    <small id="emailHelp" class="form-text text-muted">يجب أن تحتوي كلمة المرور الخاصة بك على 8 أحرف على الأقل.</small>
+                                    <small id="emailHelp" class="form-text text-muted">لا يمكن أن تكون كلمة المرور الخاصة بك كلمة مرور شائعة الاستخدام.</small>
+                                    <small id="emailHelp" class="form-text text-muted">لا يمكن أن تكون كلمة مرورك رقمية بالكامل.</small>
+                                </div>
+                                <div class="form-group col-12">
+                                    <label for="id_password2">{{ form.password2.label }}</label>
+                                    {{ form.password2 }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-12 mb-3">
+                    <div class="card bg-light">
+                        <div class="card-header text-white bg-dark">بيانات المكتب</div>
+                        <div class="card-body">
+                            <div class="form-row">
+                                <div class="form-group col-lg-4 col-12">
+                                    <label for="id_name">{{ form.name.label }}</label>
+                                    {{ form.name }}
+                                </div>
+                                <div class="form-group col-lg-4 col-12">
+                                    <label for="id_special_phone">{{ form.special_phone.label }}</label>
+                                    {{ form.special_phone }}
+                                </div>
+                                <div class="form-group col-lg-4 col-12">
+                                    <label for="id_public_email">{{ form.public_email.label }}</label>
+                                    {{ form.public_email }}
+                                </div>
+                                <div class="form-group col-lg-6 col-12">
+                                    <label for="id_city">{{ form.city.label }}</label>
+                                    {{ form.city }}
+                                </div>
+                                <div class="form-group col-lg-6 col-12">
+                                    <label for="id_address">{{ form.address.label }}</label>
+                                    {{ form.address }}
+                                </div>
+                                <div class="form-group col-lg-12 col-12">
+                                    <label for="id_url_address">{{ form.url_address.label }}</label>
+                                    {{ form.url_address }}
+                                    <small id="emailHelp" class="form-text text-muted">كتابة امتداد الموقع الجغرافي من بعد <span class="text-primary">/https://www.google.com/maps</span></small>
+                                </div>
+                                <div class="form-group col-12">
+                                    <label for="id_bio">{{ form.bio.label }}</label>
+                                    {{ form.bio }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-12 mb-3">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <button type="submit" class="btn btn-warning">اضافة المكتب</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+{% endblock officeadmin-content %}

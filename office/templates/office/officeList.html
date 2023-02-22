@@ -1,0 +1,135 @@
+{% extends 'office.html' %}
+
+{% block office-content %}
+<ol class="breadcrumb">
+    <li class="active" aria-current="page">ارسال حوالة - قائمة المكاتب</li>
+</ol>
+
+<div class="container my-3">
+    <div class="row">
+        <div class="col-12 mb-3">
+            <form action="{% url 'office:office-list' %}" method="GET" class="form-inline">
+                <div class="form-group ml-2">
+                    <select class="form-control form-control-lg" name="city">
+                        {% for v,k in CITY_CHOICES %}
+                        <option value="{{v}}">{{k}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-warning">بحث</button>
+            </form>
+        </div>
+        {% if offices %}
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">المكتب</th>
+                        <th scope="col">المدينة</th>
+                        <th scope="col">العنوان</th>
+                        <th scope="col">الحالة</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in offices %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td><a href="{{ i.get_office_user_url }}">{{ i.name }}</a></td>
+                            <td><a href="{{ i.get_office_user_url }}">
+                                {% for k,v in CITY_CHOICES %}
+                                {% if k == i.city %}
+                                {{ v }}
+                                {% endif %}
+                                {% endfor %}
+                            </a></td>
+                            <td><a href="{{ i.get_office_user_url }}">{{ i.address }}</a></td>
+                            <td><a href="{{ i.get_office_user_url }}">
+                                {% if i.user.is_active == True %}
+                                <span class="badge badge-success">نشط</span>
+                                {% else %}
+                                <span class="badge badge-danger">غيرنشط</span>
+                                {% endif %}
+                            </a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- pagination -->
+        <div class="col-12 mb-3">
+          <ul class="pagination">
+              {% if offices.has_previous %}
+              <li class="page-item">
+                  <a class="page-link" href="?page={{ offices.previous_page_number }}" tabindex="-1">السابق</a>
+              </li>
+              {% else %}
+              <li class="page-item disabled">
+                  <a class="page-link" href="#!" tabindex="-1">السابق</a>
+              </li>
+              {% endif %}
+              
+              {% if offices.number > 3 %}
+                  <li class="page-item">
+                      <a class="page-link" href="?page=1">1</a>
+                  </li>
+                  {% if offices.number > 4 %}
+                  <li class="page-item">
+                      <span class="page-link">...</span>
+                  </li>
+                  {% endif %}
+              {% endif %}
+
+              {% for num in offices.paginator.page_range %}
+                  {% if offices.number == num %}
+                      <a class="d-none" href="?page={{ num }}">{{ num }}</a>
+                      <li class="page-item active">
+                          <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                      </li>
+                  {% elif num > offices.number|add:'-3' and num < offices.number|add:'3' %}
+                      <a class="d-none" href="?page={{ num }}">{{ num }}</a>
+                      <li class="page-item">
+                          <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                      </li>
+                  {% endif %}
+              {% endfor %}
+              
+              
+
+              {% if offices.has_next %}
+                  {% if offices.number < offices.paginator.num_pages|add:'-3' %}
+                      <li class="page-item">
+                          <span class="page-link">...</span>
+                      </li>
+                      <li class="page-item">
+                          <a class="page-link" href="?page={{ offices.paginator.num_pages }}">{{ offices.paginator.num_pages }}</a>
+                      </li>
+                  {% elif offices.number < offices.paginator.num_pages|add:'-2' %}
+                      <li class="page-item">
+                          <a class="page-link" href="?page={{ offices.paginator.num_pages }}">{{ offices.paginator.num_pages }}</a>
+                      </li>
+                  {% endif %}
+                  <li class="page-item">
+                      <a class="page-link" href="?page={{offices.next_page_number}}">التالي</a>
+                  </li>
+              {% else %}
+              <li class="page-item disabled">
+                  <a class="page-link" href="#!">التالي</a>
+              </li>
+              {% endif %}
+          </ul>
+      </div>
+      <!-- end pagination -->
+      {% else %}
+      <div class="col-12">
+        <div class="text-center py-5 bg-warning rounded">
+            <span>عذرا لم يتم العثور على اي مكتب!</span>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+</div>
+
+{% endblock %}

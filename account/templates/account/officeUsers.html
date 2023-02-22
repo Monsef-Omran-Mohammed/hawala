@@ -1,0 +1,7 @@
+<h1>officeUsers.html</h1>
+
+<ul>
+    {% for i in user %}
+    <li><a href="{{ i.get_office_user_url }}">{{i.username}}</a></li>
+    {% endfor %}
+</ul>

@@ -1,0 +1,50 @@
+{% extends 'officeadmin.html' %}
+
+{% block officeadmin-content %}
+<ol class="breadcrumb">
+    <li><a href="{% url 'officeadmin:offices-list' %}">المكاتب</a></li>
+    <li class="mx-1">/</li>
+    <li class="active" aria-current="page">{{ office.name }}</li>
+</ol>
+
+<section class="my-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mb-3">
+                <p><span>حالة الحساب : </span>{% if office.user.is_active == True %}<span class="badge badge-success">نشط</span>{% else %}<span class="badge badge-danger">غيرنشط</span>{% endif %} | <a href="{{ office.user.admin_get_office_active_url }}">تعديل</a></p>
+            </div>
+            <div class="col-12 mb-3">
+                <div class="card bg-light">
+                    <div class="card-header text-white bg-dark">بيانات التواصل الخاصة</div>
+                    <div class="card-body">
+                      <div class="bg-white border rounded p-2 mb-2"><span class="font-weight-bold"><i class="fas fa-envelope ml-1"></i>البريد الالكتروني (خاص) : </span>{{ office.user.email }} | <a href="{{ office.user.admin_get_office_email_update_url }}">تعديل</a></div>
+                      <div class="bg-white border rounded p-2 mb-2"><span class="font-weight-bold"><i class="fas fa-phone ml-1"></i>رقم الهاتف (خاص) : </span>{{ office.special_phone }} | <a href="{{ office.admin_get_office_phone_update_url }}">تعديل</a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 mb-3">
+                <div class="card bg-light">
+                    <div class="card-header text-white bg-dark">بيانات الحساب</div>
+                    <div class="card-body">
+                      <div class="bg-white border rounded p-2 mb-2"><span class="font-weight-bold"><i class="fas fa-at ml-1"></i>المعرف : </span>{{ office.user.username }}@</div>
+                      <div class="bg-white border rounded p-2 mb-2"><span class="font-weight-bold"><i class="fas fa-hotel ml-1"></i>اسم المكتب : </span>{{ office.name }}</div>
+                      <div class="bg-white border rounded p-2 mb-2"><span class="font-weight-bold"><i class="fas fa-building ml-1"></i>المدينة : </span>{% for k,v in CITY_CHOICES %}
+                        {% if k == office.city %}
+                        {{ v }}
+                        {% endif %}
+                        {% endfor %}</div>
+                      <div class="bg-white border rounded p-2 mb-2"><span class="font-weight-bold"><i class="fas fa-map-marker-alt ml-1"></i>العنوان : </span>{{ office.address }}</div>
+                      <div class="bg-white border rounded p-2 mb-2"><p class="font-weight-bold"><i class="fas fa-book-open ml-1"></i>نبذة تعريفية : </p>{% if office.bio %}{{office.bio}}{% else %}//{% endif %}</div>
+                      <div class="bg-white border rounded p-2 mb-2"><span class="font-weight-bold"><i class="fas fa-envelope ml-1"></i>البريد الالكتروني (عام) : </span>{{ office.email }}</div>
+                      <div class="bg-white border rounded p-2 mb-2"><p class="font-weight-bold">ارقام الهواتف (عام) : </p>{% if phone_numbers %}{% for n in phone_numbers %}<p><i class="fas fa-phone ml-1"></i><span>{{ n.phone }}</p>{% endfor %}{% else %}<p>//</p>{% endif %}</div>
+                      
+                      <div class="bg-white border rounded p-2"><p class="font-weight-bold"><i class="fas fa-map-marked-alt ml-1"></i><span>العنوان على خارطة قوقل : </span></p><iframe class="w-100 border-0" src="https://www.google.com/maps/{{ office.url_address }}" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock officeadmin-content %}
